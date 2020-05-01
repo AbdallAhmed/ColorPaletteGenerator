@@ -22,8 +22,11 @@ import de.androidpit.colorthief.ColorThief;
 public class App extends PApplet {
 
     PImage img;
-    String imageString = "./resources/Images/IMG_3038.jpg";
+    String imageString = "./resources/Images/IMG_0140.jpg";
     int[][] pal;
+    int majorAxis = 1080;
+    int squareAxis = 1200;
+    int nonMajorAxis; 
 
     public static void main() {
         PApplet.main("App");
@@ -32,7 +35,7 @@ public class App extends PApplet {
     }
 
     public void settings() {
-        size(1200, 1200);
+        size(squareAxis, squareAxis);
 
         BufferedImage source = null;
         try {
@@ -43,13 +46,13 @@ public class App extends PApplet {
         }
 
         pal = ColorThief.getPalette(source, 10, 1, true);
-        System.out.println("******Before grooming*************");
-        for (int[] a : pal) {
-            for (int i : a) {
-                System.out.print(i + " ");
-            }
-            System.out.println();
-        }
+        // System.out.println("******Before grooming*************");
+        // for (int[] a : pal) {
+        //     for (int i : a) {
+        //         System.out.print(i + " ");
+        //     }
+        //     System.out.println();
+        // }
         // thinArrayTwo(pal);
         //pal = thinArray(pal);
 
@@ -69,8 +72,15 @@ public class App extends PApplet {
         pal = finalColorSet;
 
         img = loadImage(imageString);
-        img.resize(1080, 0);
-        // System.out.println(img.height);
+        if(img.width > img.height){
+            img.resize(majorAxis, 0);
+            nonMajorAxis = img.height;
+        }
+        else{
+            img.resize(0, majorAxis);
+            nonMajorAxis = img.width;
+        }
+        
     }
 
     public void setup() {
@@ -80,35 +90,45 @@ public class App extends PApplet {
 
     public void draw() {
         noLoop();
-        // rectMode(CENTER);
-        // rect(width/2,height/2,500,500+160);
-        
-        // fill(235, 143, 136);
-        // rect(width/2,(height/2)-80,500,500);
-
-        // line(width/2, 0,width/2, height);
-        // line(0, height/2, width, height/2);
-
+ 
         imageMode(CENTER);
-        image(img, width/2, (height/2)-80);
-        
+        if(img.width > img.height){
+            image(img, squareAxis/2, (squareAxis/2)-80);
+        }
+        else{
+            image(img, (squareAxis/2)-80, squareAxis/2);
+        }
+
+        noStroke();
         rectMode(CORNER);
+
+        //major axis minus the excess minus the padding between each rectangle
+        //this is the size of the entire block next to the image (minus one rectangle)
+        //so divide by # of colors
+        int rectangleVariableDim = (majorAxis - (10*(pal.length-1))) /pal.length; 
+
+        //center of the image is 80 pixels up from the half
+        //add half the image non-major axis to the middle of it
+        //give a 10 pixel buffer
+        int rectangleVariablPos =  ((squareAxis/2)-80) + (nonMajorAxis / 2) + 10;
+
+        int fixedDim = 150;
         for (int i = 0; i < pal.length; i++) {
             fill(pal[i][0], pal[i][1], pal[i][2]);
-            int rectangleWidth =  (width-(10*(pal.length-1))-120)/pal.length;
-            int xPosition = 60+((rectangleWidth+10)*i);
 
-            int yPosition = ((height/2)-75)+(img.height/2) + 10;
-          
-            rect(xPosition, yPosition, rectangleWidth, 150);
+            //start from the edge of the image and build out (+10 for the spacing)
+            int movingPos = ((squareAxis - majorAxis) / 2)+((rectangleVariableDim+10)*i);
+            
+            if(img.width > img.height){
+                rect(movingPos, rectangleVariablPos, rectangleVariableDim, fixedDim);
+            }
+            else{
+                rect(rectangleVariablPos, movingPos, 150, rectangleVariableDim);
+            }
             
         }
 
         save("yee-yee.jpg");
-        // for (int i = 0; i < pal4.length; i++) {
-        //     fill(pal4[i][0], pal4[i][1], pal4[i][2]);
-        //     rect(50 + (i * 75), 500, 75, 100);
-        // }
     }
 
     public int[][] thinArray(int[][] arr) {
