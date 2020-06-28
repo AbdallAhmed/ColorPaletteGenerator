@@ -51,6 +51,14 @@ public class App extends PApplet {
 
         pal = Utility.ownPaletteApproach(img,1000);
         pal = Utility.distanceToWhite(pal);
+        img.loadPixels();;
+        int[] list = img.pixels;
+        int i = list[20];
+        float red = i >> 16 & 0xFF;
+        float green = i >> 8 & 0xFF;
+        float blue = i & 0xFF;
+        System.out.format("original rgb: %f, %f, %f \n",red,green,blue);
+        RGBConvert.rgbToXYZ(i);
     }
 
     public void setup() {
