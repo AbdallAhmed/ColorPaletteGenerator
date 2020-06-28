@@ -129,4 +129,18 @@ public class Utility {
         int[][] retArray = thinArray(smallerArray);
         return retArray;
     }
+
+    public static double[][] convertRGBArrayToLABArray(int[] rgbArr){
+        double[][] labArray = new double[rgbArr.length][3];
+
+        for(int i = 0; i < rgbArr.length; i++){
+            double[] xyzStep = RGBConvert.rgbToXYZ(rgbArr[i]);
+            double[] labColor = RGBConvert.xyzToLAB(xyzStep);
+            labArray[i][0] = labColor[0];
+            labArray[i][1] = labColor[1];
+            labArray[i][2] = labColor[2];
+        }
+
+        return labArray;
+    }
 }

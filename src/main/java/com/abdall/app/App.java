@@ -53,12 +53,14 @@ public class App extends PApplet {
         pal = Utility.distanceToWhite(pal);
         img.loadPixels();;
         int[] list = img.pixels;
-        int i = list[20];
+        int i = list[1001];
         float red = i >> 16 & 0xFF;
         float green = i >> 8 & 0xFF;
         float blue = i & 0xFF;
         System.out.format("original rgb: %f, %f, %f \n",red,green,blue);
-        RGBConvert.rgbToXYZ(i);
+
+        double[][] labVals = Utility.convertRGBArrayToLABArray(list);
+        System.out.format("lab values: %f, %f, %f\n", labVals[1001][0], labVals[1001][1], labVals[1001][2]);
     }
 
     public void setup() {
