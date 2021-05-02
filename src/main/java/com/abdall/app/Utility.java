@@ -143,4 +143,13 @@ public class Utility {
 
         return labArray;
     }
+
+    public static double labDistanceDeltaC(double[] labOne, double[] labTwo){
+        double xDE = Math.sqrt( Math.pow(labTwo[1], 2) + Math.pow(labTwo[2], 2) ) 
+                    - Math.sqrt( Math.pow(labOne[1], 2) + Math.pow(labOne[2], 2) );
+        return 0.0;
+    }
+    // public static double[][] thinLabArray(double[][] originalArray){
+    //     return 0.0;
+    // }
 }

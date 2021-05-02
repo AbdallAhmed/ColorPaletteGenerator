@@ -3,15 +3,25 @@ package com.abdall.app;
 
 public class RGBConvert {
 
+    /*
+        Reference values used for sRGB conversions
+    */
     private static final double D65_TRISTIMULUS_REF_X = 95.047; 
     private static final double D65_TRISTIMULUS_REF_Y = 100.000; 
     private static final double D65_TRISTIMULUS_REF_Z = 108.883; 
 
+    /**
+     * Standard conversion to go from an RGB color to an XYZ color
+     * @param rgbColor An integer that holds the RGB representation of a color
+     * @return double[] Returns the XYZ representation for the passed in RGB color
+     */
     public static double[] rgbToXYZ(int rgbColor){
+        //Extract the r, g, b value from the integer
         double red = rgbColor >> 16 & 0xFF;
         double green = rgbColor >> 8 & 0xFF;
         double blue = rgbColor & 0xFF;
 
+        //normalize on a scale of 0 - 1
         double normalizedRed = red / 255;
         double normalizedGreen = green / 255;
         double normalizedBlue = blue / 255;
@@ -28,12 +38,16 @@ public class RGBConvert {
         double X = normalizedRed * 0.4124 + normalizedGreen * 0.3576 + normalizedBlue * 0.1805;
         double Y = normalizedRed * 0.2126 + normalizedGreen * 0.7152 + normalizedBlue * 0.0722;
         double Z = normalizedRed * 0.0193 + normalizedGreen * 0.1192 + normalizedBlue * 0.9505;
-        //System.out.format("new red: %f, new green: %f, new blue: %f\n", X, Y, Z);
 
         double holdColor[] = {X, Y, Z};
         return holdColor;
     }
 
+    /**
+     * Conversion from XYZ to to CIE-L*ab
+     * @param xzyColor an array that holds the XYZ representation of a color
+     * @return double[] Returns the CIE-L*ab representation for the passed in XYZ color 
+     */
     public static double[] xyzToLAB(double[] xyzColor){
         double X = xyzColor[0];
         double Y = xyzColor[1]; 
@@ -50,8 +64,6 @@ public class RGBConvert {
         double L = ( 116 * Y ) - 16; 
         double a = 500 * (X - Y);
         double b = 200 * (Y - Z);
-
-        //System.out.format("values for L: %f, A: %f, B: %f\n", L, a, b);
 
         double holdLab[] = {L, a, b};
         return holdLab;

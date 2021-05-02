@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import de.androidpit.colorthief.ColorThief;
+
 /**
  * Hello world!
  */
@@ -37,8 +39,8 @@ public class App extends PApplet {
             e.printStackTrace();
         }
 
-        // pal = ColorThief.getPalette(source, 30, 1, true);
-        // pal = Utility.thinArray(pal);
+        pal = ColorThief.getPalette(source, 30, 1, true);
+        pal = Utility.thinArray(pal);
         
         img = loadImage(imageString);
         if (img.width > img.height) {
@@ -49,18 +51,18 @@ public class App extends PApplet {
             nonMajorAxis = img.width;
         }
 
-        pal = Utility.ownPaletteApproach(img,1000);
-        pal = Utility.distanceToWhite(pal);
-        img.loadPixels();;
-        int[] list = img.pixels;
-        int i = list[1001];
-        float red = i >> 16 & 0xFF;
-        float green = i >> 8 & 0xFF;
-        float blue = i & 0xFF;
-        System.out.format("original rgb: %f, %f, %f \n",red,green,blue);
+        // pal = Utility.ownPaletteApproach(img,1000);
+        // pal = Utility.distanceToWhite(pal);
+        // img.loadPixels();;
+        // int[] list = img.pixels;
+        // int i = list[1001];
+        // float red = i >> 16 & 0xFF;
+        // float green = i >> 8 & 0xFF;
+        // float blue = i & 0xFF;
+        // System.out.format("original rgb: %f, %f, %f \n",red,green,blue);
 
-        double[][] labVals = Utility.convertRGBArrayToLABArray(list);
-        System.out.format("lab values: %f, %f, %f\n", labVals[1001][0], labVals[1001][1], labVals[1001][2]);
+        // double[][] labVals = Utility.convertRGBArrayToLABArray(list);
+        // System.out.format("lab values: %f, %f, %f\n", labVals[1001][0], labVals[1001][1], labVals[1001][2]);
     }
 
     public void setup() {
