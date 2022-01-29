@@ -15,7 +15,7 @@ import de.androidpit.colorthief.ColorThief;
 public class App extends PApplet {
 
     PImage img;
-    String imageString = "./resources/Images/IMG_0140.jpg";
+    String imageString = "./resources/Images/IMG_8779.jpg";
     int[][] pal;
     int[][] pal2;
     int majorAxis = 1080;
@@ -39,9 +39,10 @@ public class App extends PApplet {
             e.printStackTrace();
         }
 
-        // pal = ColorThief.getPalette(source, 30, 1, true);
+        // pal = ColorThief.getPalette(source, 10, 1, true);
         // pal = Utility.thinArray(pal);
         
+
         img = loadImage(imageString);
         if (img.width > img.height) {
             img.resize(majorAxis, 0);
@@ -51,7 +52,10 @@ public class App extends PApplet {
             nonMajorAxis = img.width;
         }
         
-        pal = Utility.ownPaletteApproach(img,100);
+        pal = colorKMeans.computeKMeans(img, 30);
+        pal = Utility.thinArray(pal);
+
+        // pal = Utility.ownPaletteApproach(img,100);
         // pal = Utility.distanceToWhite(pal);
         // img.loadPixels();;
         // int[] list = img.pixels;
